@@ -1,0 +1,9 @@
+[freshdesk]
+domain = domain.freshdesk.com
+api_key = fzajkfnazfn,az
+agent_id = 234567890
+
+[3cx]
+user = freshdesk_to_3cx
+password = awesomepassword
+database = database_single
