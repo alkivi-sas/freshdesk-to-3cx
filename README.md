@@ -55,3 +55,5 @@ The easiest way to install is inside a virtualenv
    $ source ~/venv/freshdesk-to-3cx/bin/activate
    $ ./sync-contacts.sh
    ```
+
+2. A restart of the 3CX service is necessary, we are currently looking how to avoid it
