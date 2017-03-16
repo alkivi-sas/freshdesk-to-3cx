@@ -14,12 +14,19 @@ If using Debian based system :
     $ apt-get install postgresql-server-dev-9.4 python3-dev
     ```
 
-CREATE ROLE freshdesk_to_3cx NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN PASSWORD 'password' VALID UNTIL 'infinity';
+You also need to create a PostgreSQL Role to be able to write to the specific database.
+As the postgres user on the server :
 
-GRANT CONNECT ON DATABASE database_single TO freshdesk_to_3cx;
-GRANT USAGE ON SCHEMA public TO freshdesk_to_3cx;
-GRANT ALL ON public.phonebook TO freshdesk_to_3cx;
-GRANT ALL ON public.sqphonebook TO freshdesk_to_3cx;
+    ```
+    $ psql
+    $ CREATE ROLE freshdesk_to_3cx NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN PASSWORD 'password' VALID UNTIL 'infinity';
+    $ GRANT CONNECT ON DATABASE database_single TO freshdesk_to_3cx;
+    $ GRANT USAGE ON SCHEMA public TO freshdesk_to_3cx;
+    $ GRANT ALL ON public.phonebook TO freshdesk_to_3cx;
+    $ GRANT ALL ON public.sqphonebook TO freshdesk_to_3cx;
+    # Create a index on the column where we store freshdesk id
+    $ CREATE INDEX pv_an6_idx ON phonebook (pv_an6);
+    ```
 
 ## Installation
 

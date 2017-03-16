@@ -43,8 +43,10 @@ class IPBXBinder(object):
         self.port = port
         self.create_engine()
         self.prepare()
+        self.session = None
 
     def prepare(self):
+        """Create the automap using our class."""
         Base.prepare(self.engine, reflect=True)
         self.Session = sessionmaker(bind=self.engine)
 
@@ -59,4 +61,7 @@ class IPBXBinder(object):
         self.engine = create_engine(url, client_encoding='utf8')
 
     def get_session(self):
-        return self.Session()
+        """Get a unique session accross calls."""
+        if not self.session:
+            self.session = self.Session()
+        return self.session
