@@ -7,3 +7,5 @@ six==1.10.0
 flake8
 alkivi-logger
 scriptlock
+pytest
+pytest-cov
