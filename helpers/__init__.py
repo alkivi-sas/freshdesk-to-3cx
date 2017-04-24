@@ -87,8 +87,7 @@ def format_phone_number(number):
     if number.startswith('+'):
         return number
     elif number.startswith('00'):
-        if len(number) == 13:
-            return '+{0}'.format(number[2:])
+        return '+{0}'.format(number[2:])
     elif number.startswith('0'):
         if len(number) == 10:
             return '+33{0}'.format(number[1:])
