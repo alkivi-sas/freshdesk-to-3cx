@@ -1,7 +1,6 @@
 import logging
 
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.sql import select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, Column, String, Integer
 
@@ -9,6 +8,7 @@ from sqlalchemy import create_engine, Column, String, Integer
 Base = automap_base()
 
 logger = logging.getLogger(__name__)
+
 
 class Phonebook(Base):
     __tablename__ = 'phonebook'
@@ -55,7 +55,11 @@ class IPBXBinder(object):
         # We connect with the help of the PostgreSQL URL
         # postgresql://federer:grandestslam@localhost:5432/tennis
         url = 'postgresql://{}:{}@{}:{}/{}'
-        url = url.format(self.dbuser, self.dbpass, self.host, self.port, self.db)
+        url = url.format(self.dbuser,
+                         self.dbpass,
+                         self.host,
+                         self.port,
+                         self.db)
 
         # The return value of create_engine() is our connection object
         self.engine = create_engine(url, client_encoding='utf8')
