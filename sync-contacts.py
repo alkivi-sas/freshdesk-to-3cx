@@ -144,19 +144,27 @@ def _update_contact(ipbx_contact, real_contact, ipbx_client):
 
     should_update = False
     for k, v in data.items():
-        if getattr(ipbx_contact, k) != v:
-            logger.debug('Update {0} to {1}'.format(k, v))
+        test_v = getattr(ipbx_contact, k)
+        logger.debug('Testing key {0}: '.format(k) +
+                     'Freshdesk: {0} '.format(v) +
+                     '3CX: {0}'.format(test_v))
+        if test_v != v:
+            logger.info('Updating {0}: {1} => {2}'.format(k,
+                                                          test_v,
+                                                          v))
             setattr(ipbx_contact, k, v)
             should_update = True
 
     if should_update:
         if DRY:
-            logger.debug('DRY: would have update the contact with data')
+            logger.info('DRY: would have update the contact with data')
         else:
             session = ipbx_client.get_session()
             session.add(ipbx_contact)
             session.commit()
             logger.info('Contact {0} updated'.format(real_contact.name))
+    else:
+        logger.info('No need to update')
 
 
 if __name__ == "__main__":

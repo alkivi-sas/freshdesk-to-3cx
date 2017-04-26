@@ -29,21 +29,27 @@ def need_sync(contact):
         return True
 
 
+def format_name(name):
+    """To capitalize correctly."""
+    # Thanks python :)
+    return name.title()
+
+
 def format_contact(contact):
     """Parse the contact to extract data."""
     data = {
         'company': contact.company,
         'email': contact.email,
         'fkidtenant': 1,
-        'other': contact.id,
+        'other': str(contact.id),
     }
 
     name_split = contact.name.split(' ')
     if len(name_split) > 1:
-        data['firstname'] = name_split[0]
-        data['lastname'] = ' '.join(name_split[1:])
+        data['firstname'] = format_name(name_split[0])
+        data['lastname'] = format_name(' '.join(name_split[1:]))
     else:
-        data['firstname'] = contact.name
+        data['firstname'] = format_name(contact.name)
         data['lastname'] = 'Inconnu'
 
     regexp = r"(\s+|\xc2+)"
@@ -83,15 +89,19 @@ def is_phone_mobile(number):
 
 def format_phone_number(number):
     """Always add a +33 in front of the number."""
-    logger.debug('Going to format {0}'.format(number))
+    formated = None
     if number.startswith('+'):
-        return number
+        formated = number
     elif number.startswith('00'):
-        return '+{0}'.format(number[2:])
+        formated = '+{0}'.format(number[2:])
     elif number.startswith('0'):
         if len(number) == 10:
-            return '+33{0}'.format(number[1:])
+            formated = '+33{0}'.format(number[1:])
 
-    logger.warning('Weird number {0} '.format(number) +
-                   'not formatting.')
-    return number
+    if not formated:
+        logger.warning('Weird number {0} '.format(number) +
+                       'not formatting.')
+        return number
+    else:
+        logger.debug('Formatted {0} to {1}'.format(number, formated))
+        return formated

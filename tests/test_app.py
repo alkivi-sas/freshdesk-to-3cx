@@ -1,4 +1,4 @@
-from helpers import is_phone_mobile, format_phone_number
+from helpers import is_phone_mobile, format_phone_number, format_name
 
 
 def test_mobile():
@@ -29,3 +29,17 @@ def test_format():
 
     for k, v in to_test.items():
         assert format_phone_number(k) == v
+
+
+def test_format_name():
+
+    to_test = {
+        'Toto-tata': 'Toto-Tata',
+        "D'artagnan": "D'Artagnan",
+        'De la nom': 'De La Nom',
+        'Toto-Tata': 'Toto-Tata',
+        "D'Artagnan": "D'Artagnan",
+        'De La Nom': 'De La Nom',
+    }
+    for k, v in to_test.items():
+        assert format_name(k) == v
