@@ -35,7 +35,6 @@ class Phonebook(Base):
 class IPBXBinder(object):
 
     def __init__(self, db, dbuser, dbpass, host='localhost', port=5432):
-        print('toto')
         self.db = db
         self.dbuser = dbuser
         self.dbpass = dbpass
