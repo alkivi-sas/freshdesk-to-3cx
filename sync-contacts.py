@@ -109,7 +109,10 @@ def _sync_contact_to_3cx(contact, freshdesk_client, ipbx_client):
     Using SQLAlchemy Model of 3CX contacts.
     """
     logger.debug('Going to sync {0}'.format(contact.name))
-    company = freshdesk_client.companies.get_company_from_contact(contact)
+    company_id = contact.company_id
+    if not company_id:
+        logger.debug('No company, skipping')
+    company = freshdesk_client.companies.get_company(company_id)
     setattr(contact, 'company', company.name)
 
     # Match id of the contact
