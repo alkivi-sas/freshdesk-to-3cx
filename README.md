@@ -32,6 +32,78 @@ GRANT ALL ON public.sqphonebook TO freshdesk_to_3cx;
 CREATE INDEX pv_an6_idx ON phonebook (pv_an6);
 ```
 
+You also need to add an enterprise entry on one contact to enable extra columns in database.
+
+By default, you have
+```bash
+psql database_single
+psql (9.6.17)
+Type "help" for help.
+
+database_single=# \d phonebook
+                                  Table "public.phonebook"
+     Column     |          Type          |                     Modifiers
+----------------+------------------------+---------------------------------------------------
+ idphonebook    | integer                | not null default nextval('sqphonebook'::regclass)
+ firstname      | character varying(255) | default ''::character varying
+ lastname       | character varying(255) | default ''::character varying
+ phonenumber    | character varying(255) | default ''::character varying
+ fkidtenant     | integer                |
+ fkiddn         | integer                |
+ company        | character varying      |
+ tag            | character varying      |
+ pv_an3         | character varying      |
+ pv_an5         | character varying      |
+ pv_an6         | character varying      |
+ pv_an1         | character varying      |
+ pv_crm_contact | character varying      |
+Indexes:
+    "idphonebook_pkey" PRIMARY KEY, btree (idphonebook)
+    "pv_an6_idx" btree (pv_an6)
+Check constraints:
+    "phonebook_check" CHECK (fkiddn IS NOT NULL OR fkidtenant IS NOT NULL)
+Foreign-key constraints:
+    "phonebook_fkiddn_fkey" FOREIGN KEY (fkiddn) REFERENCES dn(iddn) ON DELETE CASCADE
+    "phonebook_fkidtenant_fkey" FOREIGN KEY (fkidtenant) REFERENCES tenant(idtenant) ON DELETE CASCADE
+```
+
+After contact update you should have
+```bash
+psql database_single
+database_single=# \d phonebook
+                                  Table "public.phonebook"
+     Column     |          Type          |                     Modifiers
+----------------+------------------------+---------------------------------------------------
+ idphonebook    | integer                | not null default nextval('sqphonebook'::regclass)
+ firstname      | character varying(255) | default ''::character varying
+ lastname       | character varying(255) | default ''::character varying
+ phonenumber    | character varying(255) | default ''::character varying
+ fkidtenant     | integer                |
+ fkiddn         | integer                |
+ company        | character varying      |
+ tag            | character varying      |
+ pv_an3         | character varying      |
+ pv_an5         | character varying      |
+ pv_an6         | character varying      |
+ pv_an1         | character varying      |
+ pv_crm_contact | character varying      |
+ pv_an0         | character varying      |
+ pv_an2         | character varying      |
+ pv_an4         | character varying      |
+ pv_an7         | character varying      |
+ pv_an8         | character varying      |
+ pv_an9         | character varying      |
+Indexes:
+    "idphonebook_pkey" PRIMARY KEY, btree (idphonebook)
+    "pv_an6_idx" btree (pv_an6)
+Check constraints:
+    "phonebook_check" CHECK (fkiddn IS NOT NULL OR fkidtenant IS NOT NULL)
+Foreign-key constraints:
+    "phonebook_fkiddn_fkey" FOREIGN KEY (fkiddn) REFERENCES dn(iddn) ON DELETE CASCADE
+    "phonebook_fkidtenant_fkey" FOREIGN KEY (fkidtenant) REFERENCES tenant(idtenant) ON DELETE CASCADE
+```
+
+
 ## Installation
 
 The easiest way to install is inside a virtualenv
